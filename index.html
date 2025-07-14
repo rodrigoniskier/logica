@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 Curso Extensivo de Lógica: Da História à Prática</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMVIhbGKLCeKXekY+K7owEDMVJsAECDOyaqCI1TjVsP9Jiz1p" crossorigin="anonymous">
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctMQanyES51" crossorigin="anonymous"></script>
+    <!-- KaTeX auto-render extension -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-black: #0f172a;
+            --primary-green: #10b981;
+            --primary-blue: #3b82f6;
+            --primary-yellow: #f59e0b;
+            --primary-purple: #8b5cf6;
+            --primary-red: #ef4444;
+        }
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-black) 0%, #1e293b 100%);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .flashcard {
+            perspective: 1000px;
+            min-height: 240px;
+        }
+        
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+        
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .flashcard-back {
+            transform: rotateY(180deg);
+            text-align: left;
+        }
+        
+        .quiz-option {
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover:not(:disabled) {
+            transform: scale(1.02);
+            background-color: #e5e7eb; /* light gray */
+        }
+        .dark .quiz-option:hover:not(:disabled) {
+            background-color: #4b5563; /* dark gray */
+        }
+        
+        .quiz-option.correct {
+            background: linear-gradient(135deg, var(--primary-green), #059669);
+            color: white;
+            border-color: #047857;
+        }
+        
+        .quiz-option.incorrect {
+            background: linear-gradient(135deg, var(--primary-red), #dc2626);
+            color: white;
+            border-color: #b91c1c;
+        }
+        
+        .content-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .menu-item {
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background: linear-gradient(135deg, var(--primary-blue), #2563eb);
+            color: white;
+        }
+        
+        .menu-item.active {
+            background: linear-gradient(135deg, var(--primary-green), #059669);
+            color: white;
+            font-weight: 700;
+        }
+
+        .katex { font-size: 1.1em; }
+        .prose { max-width: none; } /* Remove max-width constraint from prose class */
+        .prose ul { padding-left: 1.25rem; }
+        .prose li { margin-top: 0.25em; margin-bottom: 0.25em; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="text-center">
+                <h1 class="text-3xl md:text-5xl font-bold mb-2">📘 CURSO EXTENSIVO DE LÓGICA</h1>
+                <p class="text-lg md:text-xl opacity-90">Da História à Prática, Submissa à Escritura</p>
+                <p class="text-md md:text-lg opacity-80 mt-2">Uma Ferramenta Divina para a Glória de Deus e a Defesa da Fé</p>
+                <div class="mt-4 flex justify-center flex-wrap gap-2 text-sm">
+                    <span class="bg-green-500 px-3 py-1 rounded-full">🎯 Apologética Reformada</span>
+                    <span class="bg-blue-500 px-3 py-1 rounded-full">📚 6 Módulos Aprofundados</span>
+                    <span class="bg-yellow-500 px-3 py-1 rounded-full">🧠 Interativo</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+        <!-- Sidebar Menu -->
+        <aside class="lg:w-1/4">
+            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 sticky top-8">
+                <h3 class="text-xl font-bold mb-4 text-center text-slate-900 dark:text-white">📚 Módulos</h3>
+                <nav id="menu-nav" class="space-y-2">
+                    <!-- Menu items will be dynamically populated by JS -->
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main id="main-content" class="lg:w-3/4">
+            <!-- Sections will be dynamically populated by JS -->
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <h3 class="text-xl font-bold mb-2">📘 Curso Extensivo de Lógica</h3>
+                <p class="text-gray-400">Da História à Prática, Submissa à Escritura</p>
+            </div>
+            <div class="border-t border-gray-700 pt-4">
+                <p class="text-sm text-gray-400">
+                    Desenvolvido por <span class="text-blue-400 font-semibold">Rodrigo Niskier</span>, com assistência de IAs.
+                </p>
+                <p class="text-xs text-gray-500 mt-2">
+                    © 2024 - Soli Deo Gloria
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA ---
+        const courseData = {
+            objetivo: {
+                title: '🎯 Objetivo Geral',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">🎯 Objetivo Geral</h2>
+                        <div class="bg-gradient-to-r from-blue-500 to-green-500 text-white p-6 rounded-lg mb-6">
+                            <p class="text-lg">Ensinar os fundamentos, o desenvolvimento histórico, e a prática da lógica formal e informal, com foco na interpretação de textos e na aplicação cristã reformada da razão, especialmente no campo da apologética e submissão à revelação.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-3 text-yellow-800 dark:text-yellow-300">📊 Competências Desenvolvidas</h3>
+                                <ul>
+                                    <li>Raciocínio lógico rigoroso para a glória de Deus</li>
+                                    <li>Argumentação apologética sólida e fiel</li>
+                                    <li>Interpretação hermenêutica precisa e reverente</li>
+                                    <li>Discernimento cultural a partir de uma cosmovisão bíblica</li>
+                                    <li>Defesa articulada da fé reformada</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg">
+                                <h3 class="text-xl font-bold mb-3 text-green-800 dark:text-green-300">🎓 Público-Alvo</h3>
+                                <ul>
+                                    <li>Estudantes de Teologia e Filosofia</li>
+                                    <li>Apologetas cristãos em formação</li>
+                                    <li>Pastores, presbíteros e líderes de ministério</li>
+                                    <li>Todo cristão que deseja amar a Deus com toda a sua mente</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            modulo1: {
+                title: '📚 Módulo 1: Fundamentos Históricos',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📚 Módulo 1: Fundamentos Históricos e Filosóficos da Lógica</h2>
+                        <div class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-3 text-blue-800 dark:text-blue-300">🎯 Objetivo do Módulo</h3>
+                            <p>Compreender o surgimento da lógica na filosofia clássica como uma manifestação da graça comum de Deus, que concede aos homens, mesmo em seu estado caído, a capacidade de raciocinar. Veremos como essa ferramenta foi sendo moldada ao longo da história, preparando o caminho para sua redenção e uso na teologia cristã.</p>
+                        </div>
+                        <div class="space-y-8">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="flashcard" onclick="flipCard(this)">
+                                    <div class="flashcard-inner">
+                                        <div class="flashcard-front bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                                            <h4 class="text-lg font-bold mb-2">🏛️ Aristóteles e o Organon</h4>
+                                            <p class="text-sm">Clique para descobrir a "ferramenta" do pensamento.</p>
+                                        </div>
+                                        <div class="flashcard-back bg-gradient-to-br from-purple-600 to-blue-500 text-white p-4">
+                                            <p><strong>Organon ("Instrumento"):</strong> Aristóteles via a lógica como a ferramenta fundamental para todo conhecimento. Para o cristão, é uma ferramenta dada por Deus para organizar o pensamento em submissão à Verdade.</p>
+                                            <p class="mt-2"><strong>Silogismo:</strong> A estrutura do argumento dedutivo. Ex: (1) Todo homem é pecador. (2) João é homem. (3) Logo, João é pecador. A conclusão segue necessariamente das premissas.</p>
+                                            <p class="mt-2"><strong>Lógica Dedutiva:</strong> Raciocinar do geral (princípios bíblicos) para o particular (aplicações na vida).</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard" onclick="flipCard(this)">
+                                    <div class="flashcard-inner">
+                                        <div class="flashcard-front bg-gradient-to-br from-green-500 to-teal-600 text-white">
+                                            <h4 class="text-lg font-bold mb-2">🏺 Lógica Estóica</h4>
+                                            <p class="text-sm">Clique para explorar a lógica das sentenças.</p>
+                                        </div>
+                                        <div class="flashcard-back bg-gradient-to-br from-teal-600 to-green-500 text-white p-4">
+                                            <p><strong>Lógica Proposicional:</strong> Focada não nos termos, mas em sentenças inteiras (proposições) e como elas se conectam. Ex: "<strong>Se</strong> Cristo ressuscitou, <strong>então</strong> nossa fé não é vã."</p>
+                                            <p class="mt-2"><strong>Conectivos Lógicos:</strong> Introduziram os operadores 'SE...ENTÃO', 'E', 'OU', que são a base da lógica moderna.</p>
+                                            <p class="mt-2"><strong>Relevância:</strong> Essencial para analisar a estrutura dos argumentos nas Escrituras e na teologia.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-slate-700 p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-4">📖 Conteúdo Programático Detalhado</h4>
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h5 class="font-bold text-green-600 dark:text-green-400 mb-2">1. A Lógica Aristotélica</h5>
+                                        <ul>
+                                            <li>As Categorias: as estruturas fundamentais do ser.</li>
+                                            <li>Sobre a Interpretação: a natureza das proposições (verdadeiro/falso).</li>
+                                            <li>Analíticos Anteriores: a teoria do silogismo.</li>
+                                            <li>Analíticos Posteriores: a lógica da prova científica (demonstração).</li>
+                                            <li>Tópicos e Refutações Sofísticas: a arte da argumentação e o reconhecimento de falácias.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-blue-600 dark:text-blue-400 mb-2">2. Desenvolvimento Pós-Aristóteles</h5>
+                                        <ul>
+                                            <li>Lógica Estóica: o cálculo proposicional.</li>
+                                            <li>Agostinho: a fé como pressuposto para o entendimento ("Creio para que possa entender").</li>
+                                            <li>Anselmo e o Argumento Ontológico: um exercício de lógica modal.</li>
+                                            <li>Tomás de Aquino: a grande síntese entre a fé cristã e a lógica aristotélica.</li>
+                                            <li>Ockham e a "Navalha": o princípio da parcimônia na argumentação.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-4 text-yellow-800 dark:text-yellow-300">📚 Leituras Obrigatórias</h4>
+                                <ul>
+                                    <li><strong>Uma História do Pensamento Cristão</strong> - Justo González (Caps. selecionados sobre a Patrística e a Escolástica)</li>
+                                    <li><strong>Organon (Categorias, Sobre a Interpretação)</strong> - Aristóteles (Seleções)</li>
+                                    <li><strong>Confissões (Livro VII)</strong> - Santo Agostinho</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            modulo2: {
+                title: '📘 Módulo 2: O Coração da Lógica',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📘 Módulo 2: O Coração da Lógica - Formal e Informal</h2>
+                        <div class="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-3 text-green-800 dark:text-green-300">🎯 Objetivo do Módulo</h3>
+                            <p>Dominar as ferramentas técnicas da lógica. A <strong>lógica formal</strong> nos dá a gramática e a sintaxe do raciocínio correto, garantindo a validade dos nossos argumentos. A <strong>lógica informal</strong> nos ensina a identificar os erros de raciocínio (falácias) na linguagem cotidiana, protegendo-nos de enganos e fortalecendo nossa capacidade de persuasão.</p>
+                        </div>
+                        
+                        <div class="space-y-10">
+                            <!-- Lógica Proposicional -->
+                            <div class="p-6 rounded-lg bg-gray-50 dark:bg-slate-700">
+                                <h3 class="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">Parte A: Lógica Proposicional - A Estrutura do Raciocínio</h3>
+                                <p>A lógica proposicional é o estudo de como sentenças inteiras (proposições) podem ser combinadas com operadores lógicos para formar argumentos válidos. Uma proposição é qualquer declaração que pode ser classificada como verdadeira (V) ou falsa (F). Vamos analisar os cinco operadores fundamentais.</p>
+                                
+                                <div class="space-y-6 mt-6">
+                                    <div>
+                                        <h4 class="text-xl font-semibold">1. $\neg$ (Negação)</h4>
+                                        <p>A negação simplesmente inverte o valor de verdade de uma proposição. Se P é verdadeiro, $\neg$P é falso. Se P é falso, $\neg$P é verdadeiro.</p>
+                                        <ul>
+                                            <li><strong>Exemplo 1 (Teológico):</strong> Se P = "Jesus é apenas um homem", que é uma proposição <strong>Falsa</strong> (F), então $\neg$P = "Não é verdade que Jesus é apenas um homem" (ou "Jesus não é apenas um homem"), que é <strong>Verdadeiro</strong> (V).</li>
+                                            <li><strong>Exemplo 2 (Ético):</strong> Se P = "Mentir é sempre aceitável" (F), então $\neg$P = "Mentir não é sempre aceitável" (V).</li>
+                                            <li><strong>Exemplo 3 (Factual):</strong> Se P = "O livro de Salmos tem 150 capítulos" (V), então $\neg$P = "O livro de Salmos não tem 150 capítulos" (F).</li>
+                                            <li><strong>Exemplo 4 (Existencial):</strong> Se P = "Não existe pecado original" (F), então $\neg$P = "Não é verdade que não existe pecado original" (ou "Existe pecado original") (V). A dupla negação afirma.</li>
+                                            <li><strong>Exemplo 5 (Legal):</strong> Se P = "O réu é culpado" (V), então $\neg$P = "O réu não é culpado" (F).</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-semibold">2. $\land$ (Conjunção)</h4>
+                                        <p>A conjunção, ou "E" lógico, conecta duas proposições (P e Q). A proposição composta P $\land$ Q só é verdadeira se <strong>ambas</strong> P e Q forem verdadeiras. Se uma delas (ou ambas) for falsa, a conjunção é falsa.</p>
+                                        <ul>
+                                            <li><strong>Exemplo 1 (Teológico):</strong> "Jesus é plenamente Deus (P) <strong>e</strong> plenamente homem (Q)". Esta afirmação (P $\land$ Q) só é verdadeira porque ambas as proposições P e Q são verdadeiras na ortodoxia cristã.</li>
+                                            <li><strong>Exemplo 2 (Requisito):</strong> "Para ser presbítero, é preciso ser irrepreensível (P) <strong>e</strong> apto para ensinar (Q)". Se um candidato não cumpre um dos requisitos, ele não satisfaz a conjunção P $\land$ Q.</li>
+                                            <li><strong>Exemplo 3 (Histórico):</strong> "Lutero afixou as 95 teses (P) <strong>e</strong> Calvino escreveu as Institutas (Q)". Como P e Q são fatos históricos verdadeiros, a conjunção é verdadeira.</li>
+                                            <li><strong>Exemplo 4 (Falso):</strong> "Davi foi um rei de Israel (P) <strong>e</strong> nunca pecou (Q)". Como Q é falso, a conjunção P $\land$ Q é falsa, mesmo que P seja verdadeiro.</li>
+                                            <li><strong>Exemplo 5 (Condição):</strong> "O crente é justificado (P) <strong>e</strong> santificado (Q)". A teologia reformada afirma que ambas as coisas são verdadeiras para todo crente, então a conjunção P $\land$ Q é verdadeira.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-semibold">3. $\lor$ (Disjunção)</h4>
+                                        <p>A disjunção, ou "OU" lógico, conecta duas proposições (P ou Q). A proposição composta P $\lor$ Q só é falsa se <strong>ambas</strong> P e Q forem falsas. Se pelo menos uma delas for verdadeira, a disjunção é verdadeira. (Nota: esta é a disjunção inclusiva, a mais comum em lógica).</p>
+                                        <ul>
+                                            <li><strong>Exemplo 1 (Evangelístico):</strong> "Arrependa-se (P) <strong>ou</strong> pereça (Q)". A esperança é que a pessoa escolha P (V), tornando a disjunção P $\lor$ Q verdadeira. Se ela não se arrepender (P é F), então Q (perecer) se torna a realidade (V), e a disjunção continua verdadeira. A única forma de a advertência ser falsa seria se alguém não se arrependesse E não perecesse.</li>
+                                            <li><strong>Exemplo 2 (Legal):</strong> "A sentença será prisão (P) <strong>ou</strong> multa (Q)". Se o juiz aplicar qualquer uma das duas (ou ambas), a sentença P $\lor$ Q foi cumprida.</li>
+                                            <li><strong>Exemplo 3 (Escolha):</strong> "Vamos estudar grego (P) <strong>ou</strong> hebraico (Q) esta noite". Se estudarmos um, o outro, ou ambos, a proposição P $\lor$ Q é verdadeira.</li>
+                                            <li><strong>Exemplo 4 (Teológico):</strong> "A Bíblia contém a Palavra de Deus (P) <strong>ou</strong> a Bíblia é a Palavra de Deus (Q)". Mesmo que alguém discorde de Q, se aceitar P, a disjunção P $\lor$ Q é verdadeira.</li>
+                                            <li><strong>Exemplo 5 (Falso):</strong> "O homem é salvo pela fé (P) <strong>ou</strong> o homem é salvo pelas obras (Q)". Na teologia reformada, P é verdadeiro e Q é falso. A disjunção P $\lor$ Q é, portanto, verdadeira.</li>
+                                        </ul>
+                                    </div>
+                                     <div>
+                                        <h4 class="text-xl font-semibold">4. $\rightarrow$ (Implicação ou Condicional)</h4>
+                                        <p>A implicação, ou "Se... então...", estabelece uma relação de condição. "Se P, então Q". P é o <strong>antecedente</strong> e Q é o <strong>consequente</strong>. A implicação P $\rightarrow$ Q só é falsa em um único cenário: quando o antecedente P é verdadeiro e o consequente Q é falso. Em todos os outros casos, é verdadeira.</p>
+                                        <ul>
+                                            <li><strong>Exemplo 1 (Promessa Bíblica):</strong> "<strong>Se</strong> confessarmos os nossos pecados (P), Ele é fiel e justo para nos perdoar (Q)". A única forma de esta promessa (P $\rightarrow$ Q) ser falsa seria se confessássemos (P é V) e Deus não nos perdoasse (Q é F).</li>
+                                            <li><strong>Exemplo 2 (Advertência):</strong> "<strong>Se</strong> você semear na carne (P), da carne colherá a corrupção (Q)". A implicação P $\rightarrow$ Q nos alerta para não tornar P verdadeiro.</li>
+                                            <li><strong>Exemplo 3 (Caso V-V):</strong> Se P="Chover" e Q="A rua fica molhada". Se chove (V) e a rua fica molhada (V), a implicação P $\rightarrow$ Q é verdadeira.</li>
+                                            <li><strong>Exemplo 4 (Caso F-V):</strong> Se P="O sol é frio" (F) e Q="A grama é verde" (V). A implicação P $\rightarrow$ Q é <strong>verdadeira</strong>. Isso parece estranho, mas a lógica diz que uma falsidade pode implicar qualquer coisa. A promessa não foi quebrada.</li>
+                                            <li><strong>Exemplo 5 (Caso F-F):</strong> Se P="Os porcos voam" (F) e Q="O inferno é gelado" (F). A implicação P $\rightarrow$ Q é <strong>verdadeira</strong>. Novamente, partindo de uma premissa falsa, não se quebra a regra condicional.</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-semibold">5. $\leftrightarrow$ (Bicondicional ou Equivalência)</h4>
+                                        <p>O bicondicional, ou "se e somente se", estabelece uma equivalência mútua. P $\leftrightarrow$ Q significa que P implica Q e Q implica P. A proposição composta P $\leftrightarrow$ Q só é verdadeira se P e Q tiverem o <strong>mesmo</strong> valor de verdade (ambos V ou ambos F).</p>
+                                        <ul>
+                                            <li><strong>Exemplo 1 (Definição Teológica):</strong> "Alguém é cristão (P) <strong>se e somente se</strong> essa pessoa foi regenerada pelo Espírito Santo (Q)". P $\leftrightarrow$ Q significa que não se pode ter um sem o outro.</li>
+                                            <li><strong>Exemplo 2 (Definição):</strong> "Um polígono é um triângulo (P) <strong>se e somente se</strong> ele tem três lados (Q)". P e Q são inseparáveis.</li>
+                                            <li><strong>Exemplo 3 (Verdadeiro, V-V):</strong> "A água ferve a 100°C ao nível do mar (P) $\leftrightarrow$ A água congela a 0°C ao nível do mar (Q)". Como P e Q são ambos verdadeiros, o bicondicional é verdadeiro.</li>
+                                            <li><strong>Exemplo 4 (Verdadeiro, F-F):</strong> "A lua é feita de queijo (P) $\leftrightarrow$ O sol gira em torno da Terra (Q)". Como P e Q são ambos falsos, o bicondicional P $\leftrightarrow$ Q é verdadeiro, pois eles têm o mesmo valor de verdade.</li>
+                                            <li><strong>Exemplo 5 (Falso, V-F):</strong> "Ser batizado (P) $\leftrightarrow$ Ser salvo (Q)". A teologia reformada diria que P pode ser verdadeiro enquanto Q é falso (e vice-versa), então a equivalência P $\leftrightarrow$ Q é falsa.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Exemplos Complexos -->
+                            <div class="p-6 rounded-lg bg-gray-50 dark:bg-slate-700">
+                                <h3 class="text-2xl font-bold mb-4 text-purple-600 dark:text-purple-400">Análise Lógica de Argumentos Complexos</h3>
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="text-xl font-semibold">Exemplo 1: A Lógica da Justificação (Romanos 3:28)</h4>
+                                        <p class="italic">"Concluímos, pois, que o homem é justificado pela fé (F), independentemente das obras da lei (O)."</p>
+                                        <p>Vamos decompor este argumento:</p>
+                                        <ul>
+                                            <li>Seja J: "O homem é justificado".</li>
+                                            <li>Seja F: "O homem tem fé".</li>
+                                            <li>Seja O: "O homem pratica obras da lei".</li>
+                                        </ul>
+                                        <p>A frase pode ser traduzida para a lógica como: $J \leftrightarrow (F \land \neg O)$.</p>
+                                        <p>Análise: "Um homem é justificado (J) <strong>se e somente se</strong> ($\leftrightarrow$) ele tem fé (F) <strong>e</strong> ($\land$) ele <strong>não</strong> ($\neg$) é justificado pelas obras da lei (O)". Isso mostra que a fé é a condição necessária e suficiente, e que as obras são explicitamente excluídas como condição. A lógica formal nos ajuda a ver a estrutura precisa e a exclusividade do argumento paulino.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xl font-semibold">Exemplo 2: O Dilema de Eutífron e a Moralidade</h4>
+                                        <p class="italic">O dilema clássico pergunta: "Algo é bom porque Deus o ordena, ou Deus o ordena porque é bom?"</p>
+                                        <p>Vamos analisar as duas opções (o dilema):</p>
+                                        <ul>
+                                            <li>Seja B: "X é bom".</li>
+                                            <li>Seja D: "Deus ordena X".</li>
+                                        </ul>
+                                        <ol>
+                                            <li><strong>Opção 1:</strong> $D \rightarrow B$ ("Se Deus ordena X, então X é bom"). Isso parece fazer de Deus a fonte da bondade, mas críticos dizem que torna a bondade arbitrária. Se Deus ordenasse a crueldade, ela se tornaria boa?</li>
+                                            <li><strong>Opção 2:</strong> $B \rightarrow D$ ("Se X é bom, então Deus o ordena"). Isso parece tornar a bondade um padrão externo a Deus, ao qual Ele mesmo deve se conformar, o que limita Sua soberania.</li>
+                                        </ol>
+                                        <p>A solução cristã reformada rejeita o dilema, afirmando uma terceira via baseada na natureza de Deus. A tradução lógica seria: $B \leftrightarrow N_D$, onde $N_D$ é "X se conforma à natureza santa de Deus".</p>
+                                        <p>Análise: "Algo é bom (B) <strong>se e somente se</strong> ($\leftrightarrow$) se conforma à natureza santa de Deus ($N_D$)". A bondade não é arbitrária nem externa a Deus; ela é um reflexo do Seu próprio caráter imutável. Deus ordena o que é bom porque Ele É bom. A lógica nos ajuda a identificar a falácia do Falso Dilema e a formular uma resposta teologicamente robusta.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Falácias Informais -->
+                            <div class="p-6 rounded-lg bg-gray-50 dark:bg-slate-700">
+                                <h3 class="text-2xl font-bold mb-4 text-red-600 dark:text-red-400">Parte B: Falácias Informais - O Mapa dos Erros de Raciocínio</h3>
+                                <p>Uma falácia é um erro de raciocínio que torna um argumento inválido. Enquanto a lógica formal lida com a estrutura, a lógica informal lida com o conteúdo e o contexto. Conhecer as falácias é como ter um sistema de defesa intelectual.</p>
+                                <div class="space-y-6 mt-6">
+                                    <h4 class="text-xl font-semibold">Falácias de Relevância</h4>
+                                    <p>Os argumentos dependem de premissas que não são relevantes para a conclusão.</p>
+                                    <ul>
+                                        <li><strong>1. Ad Hominem (Ataque ao Homem):</strong> Atacar o caráter ou as circunstâncias da pessoa que apresenta o argumento, em vez do argumento em si.
+                                            <ul>
+                                                <li><em>Exemplo (Abusivo):</em> "Não podemos levar a sério a teologia de Agostinho, pois ele teve uma vida imoral antes de sua conversão."</li>
+                                                <li><em>Exemplo (Circunstancial):</em> "Claro que o pastor defende o dízimo, ele é pago com esse dinheiro."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>2. Apelo à Emoção (Argumentum ad Populum/Misericordiam):</strong> Tentar persuadir usando emoções (medo, piedade, patriotismo) em vez de um argumento racional.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Devemos aceitar essa nova doutrina, pensem em quantas pessoas se sentirão acolhidas e felizes com ela."</li>
+                                            </ul>
+                                        </li>
+                                         <li><strong>3. Espantalho (Straw Man):</strong> Deturpar ou caricaturar o argumento do oponente para torná-lo mais fácil de atacar.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Então você é calvinista? Ah, você acredita que Deus é um tirano que cria pessoas apenas para mandá-las para o inferno sem que elas tenham qualquer escolha."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>4. Pista Falsa (Red Herring):</strong> Introduzir um tópico irrelevante no meio de um argumento para desviar a atenção da questão original.
+                                            <ul>
+                                                <li><em>Exemplo:</em> Em um debate sobre a inerrância da Bíblia, alguém diz: "Mas o mais importante é o que a igreja está fazendo para ajudar os pobres. É nisso que deveríamos focar."</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <h4 class="text-xl font-semibold">Falácias de Indução Deficiente</h4>
+                                    <p>As premissas são muito fracas ou ineficazes para justificar a conclusão.</p>
+                                    <ul>
+                                        <li><strong>5. Apelo à Ignorância (Argumentum ad Ignorantiam):</strong> Argumentar que uma proposição é verdadeira porque não foi provado que é falsa, ou vice-versa.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Ninguém conseguiu provar conclusivamente que a macroevolução não aconteceu, portanto, ela deve ser verdadeira."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>6. Apelo Inadequado à Autoridade (Argumentum ad Verecundiam):</strong> Citar uma autoridade que não é especialista no assunto em questão.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Meu físico favorito, que ganhou um prêmio Nobel, disse que a teologia é irrelevante. Portanto, deve ser."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>7. Generalização Apressada:</strong> Tirar uma conclusão sobre um grupo inteiro com base em uma amostra pequena ou atípica.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Eu conheci um cristão que era hipócrita. Portanto, todos os cristãos são hipócritas."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>8. Falsa Causa (Post hoc ergo propter hoc):</strong> Assumir que, porque um evento (B) aconteceu depois de outro (A), o evento A deve ter causado o evento B.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Depois que a nova tradução da Bíblia foi lançada, a frequência na igreja diminuiu. Portanto, a nova tradução causou a queda na frequência."</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <h4 class="text-xl font-semibold">Falácias de Pressuposição</h4>
+                                    <p>O argumento assume como verdadeiro aquilo que ele deveria provar.</p>
+                                    <ul>
+                                        <li><strong>9. Petição de Princípio (Argumento Circular):</strong> A conclusão do argumento já está contida, de forma implícita ou explícita, em uma de suas premissas.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "A Bíblia é a palavra de Deus porque ela mesma diz que é, e a palavra de Deus é a verdade."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>10. Falso Dilema (Falsa Dicotomia):</strong> Apresentar apenas duas opções como as únicas possíveis, quando na verdade existem outras alternativas.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Ou a ciência pode explicar tudo, ou devemos acreditar em mitos."</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>11. Pergunta Complexa:</strong> Fazer uma pergunta que pressupõe algo que não foi provado ou aceito.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "Você já parou de sonegar seus impostos?" (A pergunta assume que você já sonegava antes).</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                     <h4 class="text-xl font-semibold">Falácias de Ambiguidade</h4>
+                                    <p>O argumento usa uma palavra ou frase com múltiplos significados de forma enganosa.</p>
+                                    <ul>
+                                        <li><strong>12. Equivocação:</strong> Usar a mesma palavra com dois significados diferentes no mesmo argumento.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "A ciência nos diz que a fé não é racional. Mas eu tenho fé que meu time vai ganhar. Logo, a ciência diz que torcer para meu time não é racional." (Usa "fé" em sentido religioso e em sentido de confiança comum).</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>13. Anfibologia:</strong> Uma ambiguidade gramatical em uma frase que permite mais de uma interpretação.
+                                            <ul>
+                                                <li><em>Exemplo:</em> "O profeta disse ao rei que ele certamente venceria a batalha." (Não está claro quem venceria, o profeta ou o rei).</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <!-- Quiz de Falácias -->
+                            <div class="p-6 rounded-lg bg-red-50 dark:bg-red-900/30">
+                                <h3 class="text-2xl font-bold mb-4 text-red-700 dark:text-red-400">⚠️ Quiz Mestre de Falácias</h3>
+                                <p class="mb-6">Teste seu conhecimento. Identifique a principal falácia em cada argumento. As respostas corretas serão destacadas após a sua escolha.</p>
+                                <div id="quiz-falacias" class="space-y-8">
+                                    <!-- As 15 perguntas do quiz serão inseridas aqui pelo JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            modulo3: {
+                title: '📖 Módulo 3: Lógica e Revelação',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📖 Módulo 3: A Lógica Submissa à Revelação</h2>
+                        <div class="bg-purple-50 dark:bg-purple-900/20 p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-3 text-purple-800 dark:text-purple-300">🎯 Objetivo do Módulo</h3>
+                            <p>Este é o ponto de virada. Tendo aprendido o que é a lógica, agora aprendemos a quem ela serve. Para o cristão, a razão não é autônoma; ela é uma serva da revelação. Este módulo estabelece o fundamento da epistemologia reformada: todo pensamento deve ser levado cativo à obediência de Cristo (2 Co 10:5).</p>
+                        </div>
+                        <div class="space-y-8">
+                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-3">✝️ O Ponto de Partida Não-Negociável</h4>
+                                <blockquote class="text-lg italic border-l-4 pl-4">
+                                    "O temor do SENHOR é o princípio do saber, mas os loucos desprezam a sabedoria e o ensino."
+                                    <cite class="block text-sm mt-2 opacity-90">- Provérbios 1:7</cite>
+                                </blockquote>
+                                <p class="mt-2">O conhecimento verdadeiro não começa na razão humana autônoma, mas em uma postura de submissão e reverência ao Deus que se revela.</p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4">A Hierarquia do Conhecimento Cristão</h3>
+                                <p>A epistemologia reformada organiza as fontes de conhecimento em uma hierarquia clara de autoridade:</p>
+                                <ol>
+                                    <li><strong>Revelação Especial (A Escritura):</strong> A fonte de conhecimento primária, infalível e suficiente sobre quem é Deus, quem somos nós, e como podemos ser salvos. É o axioma fundamental, a pressuposição sobre a qual todo o resto se constrói. A Escritura é a norma que normatiza e não é normatizada (<em>norma normans non normata</em>).</li>
+                                    <li><strong>Revelação Geral (Natureza e Consciência):</strong> Deus se revela na criação e na consciência moral do homem (Romanos 1-2). Esta revelação é verdadeira e gloriosa, mas é insuficiente para a salvação e é consistentemente suprimida e distorcida pelo homem pecador.</li>
+                                    <li><strong>Razão e Lógica:</strong> Uma faculdade dada por Deus, parte da <em>imago Dei</em>. A razão não é uma fonte de conhecimento em si mesma, mas a ferramenta que usamos para entender, interpretar e aplicar o conhecimento derivado da revelação. A razão, afetada pela Queda, deve ser redimida e iluminada pelo Espírito Santo para funcionar corretamente.</li>
+                                </ol>
+                            </div>
+
+                            <div class="grid md:grid-cols-3 gap-6">
+                                <div class="flashcard" onclick="flipCard(this)">
+                                    <div class="flashcard-inner">
+                                        <div class="flashcard-front bg-gradient-to-br from-yellow-500 to-orange-600 text-white">
+                                            <h4 class="text-lg font-bold mb-2">📜 Agostinho</h4>
+                                            <p class="text-sm">"Credo ut intelligam"</p>
+                                        </div>
+                                        <div class="flashcard-back bg-gradient-to-br from-orange-600 to-yellow-500 text-white p-4">
+                                            <p><strong>"Creio para que possa entender."</strong> Agostinho argumentava contra a ideia de que a razão precede a fé. Para ele, a fé é o que abre os olhos da mente para compreender a realidade corretamente. A fé não é um salto no escuro, mas um passo para a luz, que permite que a razão finalmente veja com clareza.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard" onclick="flipCard(this)">
+                                    <div class="flashcard-inner">
+                                        <div class="flashcard-front bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                                            <h4 class="text-lg font-bold mb-2">⚡ Calvino</h4>
+                                            <p class="text-sm">A Escritura como "Óculos"</p>
+                                        </div>
+                                        <div class="flashcard-back bg-gradient-to-br from-indigo-600 to-blue-500 text-white p-4">
+                                            <p>Calvino ensinava que, por causa do pecado, nossa visão da revelação geral de Deus está embaçada. A criação ainda clama a glória de Deus, mas nós não a interpretamos corretamente. A Escritura funciona como "óculos" que corrigem nossa visão, permitindo-nos ver tanto a revelação geral quanto a especial com a clareza pretendida por Deus, através do testemunho interno do Espírito Santo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flashcard" onclick="flipCard(this)">
+                                    <div class="flashcard-inner">
+                                        <div class="flashcard-front bg-gradient-to-br from-green-500 to-emerald-600 text-white">
+                                            <h4 class="text-lg font-bold mb-2">🛡️ Van Til</h4>
+                                            <p class="text-sm">Apologética Pressuposicional</p>
+                                        </div>
+                                        <div class="flashcard-back bg-gradient-to-br from-emerald-600 to-green-500 text-white p-4">
+                                            <p>Cornelius Van Til levou essa ideia à sua conclusão lógica. Não há "terreno neutro" para o debate entre o crente e o descrente. O descrente "toma emprestado" capital da cosmovisão cristã (como a validade da lógica e a uniformidade da natureza) para argumentar contra ela. A tarefa do apologeta é expor essa inconsistência e mostrar que somente a pressuposição do Deus da Bíblia torna o conhecimento e a experiência inteligíveis.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-100 dark:bg-slate-700 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold mb-4">A Antítese Radical</h3>
+                                <p>Não existem duas formas de pensar que são igualmente válidas. Existe o pensamento que parte de Deus e Sua revelação, e o pensamento que parte da autonomia do homem. Essas duas abordagens estão em oposição fundamental (antítese). O pensamento autônomo, ao negar seu Criador, inevitavelmente leva à irracionalidade e ao absurdo, pois serra o galho em que está sentado: a própria base para a racionalidade, que é um Deus racional.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            modulo4: {
+                title: '🛡️ Módulo 4: Apologética Reformada',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">🛡️ Módulo 4: Lógica e Apologética Cristã Reformada</h2>
+                        <div class="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-3 text-red-800 dark:text-red-300">🎯 Objetivo do Módulo</h3>
+                            <p>Aplicar as ferramentas da lógica e os fundamentos da epistemologia reformada na tarefa da apologética. A meta não é "provar" Deus a um incrédulo em terreno neutro (pois não há), mas demonstrar que a fé cristã é a única cosmovisão que oferece um fundamento para a própria racionalidade e experiência humana, expondo a futilidade das alternativas.</p>
+                        </div>
+                        <div class="space-y-8">
+                            <div class="bg-gradient-to-r from-red-500 to-pink-500 text-white p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-3">⚔️ As Armas da Nossa Milícia</h4>
+                                <blockquote class="text-lg italic border-l-4 pl-4">
+                                    "Porque as armas da nossa milícia não são carnais, e sim poderosas em Deus, para destruir fortalezas, anulando nós sofismas e toda altivez que se levante contra o conhecimento de Deus, e levando cativo todo pensamento à obediência de Cristo."
+                                    <cite class="block text-sm mt-2 opacity-90">- 2 Coríntios 10:4-5</cite>
+                                </blockquote>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4">O Argumento Transcendental pela Existência de Deus (TAG)</h3>
+                                <p>O método pressuposicional é melhor resumido no Argumento Transcendental. Ele não argumenta a partir de evidências para chegar a Deus, mas argumenta que Deus é a <strong>condição prévia necessária</strong> para que as evidências e a própria lógica façam sentido.</p>
+                                <p>A forma simplificada do argumento é:</p>
+                                <ol>
+                                    <li>A lógica, a ciência e a moralidade objetiva existem e são inteligíveis (o incrédulo concorda com isso para poder argumentar).</li>
+                                    <li>A única cosmovisão que oferece um fundamento para a existência e inteligibilidade da lógica, da ciência e da moralidade é a cosmovisão cristã.
+                                        <ul>
+                                            <li><strong>Lógica:</strong> Leis lógicas são universais, imateriais e imutáveis, refletindo a mente de um Deus transcendente.</li>
+                                            <li><strong>Ciência:</strong> A ciência requer a uniformidade da natureza (o futuro se assemelhará ao passado), que só é garantida por um Deus fiel que sustenta o universo.</li>
+                                            <li><strong>Moralidade:</strong> Deveres morais objetivos ("não matarás") requerem um Legislador moral transcendente.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Cosmovisões não-cristãs (como o materialismo ateísta) não podem justificar essas coisas. Em um universo puramente material e acidental, por que a lógica deveria ser confiável? Por que a natureza deveria ser uniforme? De onde vêm os deveres morais objetivos?</li>
+                                    <li><strong>Conclusão:</strong> Portanto, a existência do Deus cristão é necessária para a inteligibilidade e o conhecimento. Negar a Deus é, em última análise, abraçar o absurdo.</li>
+                                </ol>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-slate-700 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold mb-4">Reestruturando os Argumentos Clássicos</h3>
+                                <p>Na apologética pressuposicional, os argumentos clássicos (cosmológico, teleológico, moral) não são usados como provas independentes, mas como ilustrações da dependência do mundo em relação a Deus.</p>
+                                <ul>
+                                    <li><strong>Argumento Cosmológico:</strong> Não é "Tudo que existe tem uma causa; o universo existe; logo, o universo tem uma causa". É "O próprio conceito de causalidade só faz sentido em um universo ordenado por um Deus sustentador. A existência de cadeias causais aponta para a Fonte de toda causalidade."</li>
+                                    <li><strong>Argumento Teleológico (Design):</strong> Não é "O olho é complexo; logo, deve ter um designer". É "A própria capacidade de reconhecermos design, ordem e propósito pressupõe que vivemos em um universo com propósito, criado por uma Mente com propósito. O design não prova Deus; a existência de Deus explica por que vemos design."</li>
+                                    <li><strong>Argumento Moral:</strong> Não é "Temos uma lei moral; logo, deve haver um legislador". É "A própria possibilidade de um debate sobre o 'bem' e o 'mal' pressupõe um padrão objetivo de bondade. Esse padrão só pode ser fundamentado no caráter de um Deus santo. Sem Ele, a moralidade é apenas preferência pessoal ou construção social."</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            modulo5: {
+                title: '📖 Módulo 5: Hermenêutica e Interpretação',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📖 Módulo 5: Leitura, Hermenêutica e Interpretação de Textos</h2>
+                        <div class="bg-indigo-50 dark:bg-indigo-900/20 p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-3 text-indigo-800 dark:text-indigo-300">🎯 Objetivo do Módulo</h3>
+                            <p>Aplicar os princípios lógicos na tarefa mais importante para o cristão: a correta interpretação das Escrituras. A hermenêutica é a ciência e a arte da interpretação. A lógica é sua serva fiel, ajudando-nos a seguir o fluxo de pensamento dos autores bíblicos e a construir uma teologia sã e coerente.</p>
+                        </div>
+                        <div class="space-y-8">
+                             <div class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-3">📜 Princípio Fundamental</h4>
+                                <blockquote class="text-lg italic border-l-4 pl-4">
+                                    "A Escritura interpreta a Escritura"
+                                    <cite class="block text-sm mt-2 opacity-90">- <em>Scriptura Scripturam interpretat</em> (Princípio da Reforma)</cite>
+                                </blockquote>
+                                <p class="mt-2">A regra infalível de interpretação da Escritura é a própria Escritura. Portanto, quando houver questão sobre o verdadeiro e pleno sentido de qualquer Escritura, esse deve ser investigado e conhecido por outros lugares que falem mais claramente (Confissão de Fé de Westminster, 1.9).</p>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4">O Método Histórico-Gramatical</h3>
+                                <p>Este método, fundamental para a hermenêutica protestante, insiste que o significado de um texto é aquele que o autor original pretendia comunicar à sua audiência original. A lógica nos ajuda a traçar esse significado através de:</p>
+                                <ul>
+                                    <li><strong>Análise Gramatical:</strong> Entender o significado das palavras (lexicologia) e como elas se relacionam em uma frase (sintaxe). A lógica dos conectivos (e, ou, se...então) é crucial aqui.</li>
+                                    <li><strong>Análise do Contexto:</strong>
+                                        <ul>
+                                            <li><strong>Contexto Imediato:</strong> Os versículos e parágrafos que cercam a passagem.</li>
+                                            <li><strong>Contexto do Livro:</strong> O propósito geral e o fluxo de argumento do livro bíblico em questão.</li>
+                                            <li><strong>Contexto Canônico:</strong> Como a passagem se encaixa na história redentora de toda a Bíblia (a "Analogia da Fé").</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Análise Histórica e Cultural:</strong> Compreender os costumes, a geografia e a situação histórica em que o texto foi escrito para evitar anacronismos.</li>
+                                </ul>
+                            </div>
+                             <div class="bg-gray-100 dark:bg-slate-700 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold mb-4">Exercício Prático: Análise Lógica de Gálatas 2:16</h3>
+                                <p class="italic">"...sabendo que o homem não é justificado pelas obras da lei, e sim mediante a fé em Cristo Jesus, também temos crido em Cristo Jesus, para que fôssemos justificados pela fé em Cristo e não por obras da lei, pois, por obras da lei, ninguém será justificado."</p>
+                                <p>Vamos identificar a estrutura lógica:</p>
+                                <ol>
+                                    <li><strong>Premissa Principal (Negação):</strong> O homem <strong>não é</strong> justificado por obras da lei ($\neg$O).</li>
+                                    <li><strong>Premissa Principal (Afirmação):</strong> O homem <strong>é</strong> justificado pela fé em Cristo (F).</li>
+                                    <li><strong>Estrutura Lógica Central:</strong> A justificação (J) acontece se e somente se houver fé, e não por obras: $J \leftrightarrow (F \land \neg O)$.</li>
+                                    <li><strong>Aplicação (Implicação):</strong> <strong>Se</strong> queremos ser justificados (P), <strong>então</strong> devemos crer em Cristo (Q). $(P \rightarrow Q)$.</li>
+                                    <li><strong>Reforço (Universal Negativo):</strong> Paulo conclui com uma declaração universal: "Por obras da lei, <strong>ninguém</strong> ($\forall$x, $\neg$J(x) por O(x)) será justificado".</li>
+                                </ol>
+                                <p>A lógica nos mostra que Paulo está construindo um argumento hermético, usando negação, afirmação, aplicação condicional e uma conclusão universal para não deixar dúvidas sobre a doutrina da justificação somente pela fé.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            modulo6: {
+                title: '📌 Módulo 6: Cultura e Cosmovisão',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📌 Módulo 6: Cultura, Cosmovisão e Lógica Cristã</h2>
+                        <div class="bg-orange-50 dark:bg-orange-900/20 p-6 rounded-lg mb-6">
+                            <h3 class="text-xl font-bold mb-3 text-orange-800 dark:text-orange-300">🎯 Objetivo do Módulo</h3>
+                            <p>Levar a lógica redimida para fora dos muros da igreja e da academia, aplicando-a na análise da cultura e na formação de uma cosmovisão cristã abrangente. O objetivo é desenvolver o discernimento para identificar os "ídolos do coração" de nossa cultura e apresentar uma alternativa cristã coerente e atraente em todas as áreas da vida.</p>
+                        </div>
+                        <div class="space-y-8">
+                             <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-3">🌍 O Mandato Cultural e a Soberania de Cristo</h4>
+                                <blockquote class="text-lg italic border-l-4 pl-4">
+                                    "Não há nem uma polegada quadrada em todo o domínio da existência humana sobre a qual Cristo, que é soberano sobre tudo, não clame: 'É meu!'"
+                                    <cite class="block text-sm mt-2 opacity-90">- Abraham Kuyper</cite>
+                                </blockquote>
+                                <p class="mt-2">A lógica cristã não é apenas para a defesa da fé (apologética), mas para a construção de uma cultura (o "mandato cultural" de Gênesis 1:28). Isso envolve pensar cristãmente sobre política, arte, ciência, família, trabalho, etc.</p>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4">A Lógica dos Ídolos: Desmascarando as Cosmovisões Seculares</h3>
+                                <p>Toda cosmovisão não-cristã é, em sua essência, idólatra - ela eleva uma parte da criação ao status de criador. Nossa tarefa lógica é analisar essas cosmovisões e mostrar sua incoerência interna.</p>
+                                <ul>
+                                    <li><strong>Materialismo/Naturalismo:</strong>
+                                        <ul>
+                                            <li><strong>Ídolo:</strong> A matéria/energia é a realidade última.</li>
+                                            <li><strong>Incoerência Lógica:</strong> Se tudo é matéria, de onde vêm as leis imateriais da lógica? Se nossos cérebros são apenas reações químicas, por que deveríamos confiar em nossos próprios pensamentos? O materialismo não pode justificar a própria razão que usa para se defender.</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Individualismo Expressivo:</strong>
+                                        <ul>
+                                            <li><strong>Ídolo:</strong> O "eu" autêntico e meus sentimentos são a fonte da verdade e da moral.</li>
+                                            <li><strong>Incoerência Lógica:</strong> Se a verdade é subjetiva para cada um, então a afirmação "a verdade é subjetiva" é apenas uma verdade subjetiva, não uma afirmação universal. Se todos devem respeitar minha "verdade", isso impõe um dever moral universal ("respeitarás"), contradizendo a ideia de que não há moral universal.</li>
+                                        </ul>
+                                    </li>
+                                     <li><strong>Utilitarismo:</strong>
+                                        <ul>
+                                            <li><strong>Ídolo:</strong> A maior felicidade para o maior número de pessoas é o bem supremo.</li>
+                                            <li><strong>Incoerência Lógica:</strong> Quem define "felicidade"? Como se pode calcular as consequências futuras de uma ação? Essa visão poderia justificar sacrificar uma minoria inocente pela "felicidade" da maioria, o que nossa consciência (dada por Deus) nos diz ser monstruoso.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-100 dark:bg-slate-700 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold mb-4">Conclusão do Curso: A Lógica a Serviço do Amor</h3>
+                                <p>O objetivo final de dominar a lógica não é vencer debates ou parecer mais inteligente. O objetivo é duplo, conforme o Grande Mandamento:</p>
+                                <ol>
+                                    <li><strong>Amar a Deus com toda a nossa mente:</strong> Usar as faculdades que Ele nos deu para pensar Seus pensamentos segundo Ele, de forma clara, coerente e bíblica.</li>
+                                    <li><strong>Amar ao próximo como a nós mesmos:</strong> Usar a lógica para comunicar a verdade do Evangelho de forma clara e persuasiva, para remover obstáculos intelectuais à fé, e para construir uma sociedade mais justa e ordenada, para a glória de Deus.</li>
+                                </ol>
+                                <p>Uma lógica afiada, submissa à Escritura e aquecida pelo amor a Deus e ao próximo, é uma das ferramentas mais poderosas que um cristão pode ter em seu arsenal.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            recursos: {
+                title: '📂 Recursos e Atividades',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📂 Recursos e Atividades</h2>
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
+                                <div class="text-center">
+                                    <span class="text-4xl mb-3 block">📚</span>
+                                    <h3 class="text-xl font-bold mb-3 text-blue-800 dark:text-blue-300">Leituras Dirigidas</h3>
+                                    <ul><li>Fichamentos críticos</li><li>Resumos argumentativos</li><li>Análise comparativa</li></ul>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg">
+                                <div class="text-center">
+                                    <span class="text-4xl mb-3 block">🗣️</span>
+                                    <h3 class="text-xl font-bold mb-3 text-green-800 dark:text-green-300">Debates Socráticos</h3>
+                                    <ul><li>Método interrogativo</li><li>Análise de pressupostos</li><li>Argumentação dialética</li></ul>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 p-6 rounded-lg">
+                                <div class="text-center">
+                                    <span class="text-4xl mb-3 block">📝</span>
+                                    <h3 class="text-xl font-bold mb-3 text-yellow-800 dark:text-yellow-300">Exercícios Escritos</h3>
+                                    <ul><li>Identificação de falácias</li><li>Construção de silogismos</li><li>Análise proposicional</li></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            avaliacao: {
+                title: '📜 Avaliação Final',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 prose dark:prose-invert">
+                        <h2 class="text-3xl font-bold mb-6 text-center">📜 Avaliação Final</h2>
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-3">🎯 Objetivo da Avaliação</h3>
+                            <p>Demonstrar domínio integrado dos princípios lógicos, hermenêuticos e apologéticos na defesa articulada da fé cristã reformada.</p>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-4 text-blue-800 dark:text-blue-300">📊 Projeto Apologético (60%)</h4>
+                                <p>Escrever um ensaio defendendo uma doutrina cristã central contra uma objeção comum, usando os princípios da apologética pressuposicional e da lógica formal.</p>
+                            </div>
+                            <div class="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg">
+                                <h4 class="text-xl font-bold mb-4 text-green-800 dark:text-green-300">✍️ Prova Escrita (40%)</h4>
+                                <p>Uma prova com questões dissertativas e práticas, incluindo análise lógica de textos bíblicos, identificação de falácias e construção de argumentos.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            welcome: {
+                title: '👋 Bem-vindo!',
+                content: `
+                    <div class="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 text-center">
+                        <div class="mb-8">
+                            <span class="text-6xl mb-4 block">🧠</span>
+                            <h2 class="text-3xl font-bold mb-4">Bem-vindo ao Curso de Lógica Cristã!</h2>
+                            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                                Desenvolva sua capacidade de raciocínio lógico e defesa da fé através de uma jornada completa pelos fundamentos históricos, princípios formais e aplicações práticas da lógica submissa à revelação bíblica.
+                            </p>
+                        </div>
+                        <div class="bg-gradient-to-r from-blue-500 to-green-500 text-white p-6 rounded-lg">
+                            <h3 class="text-xl font-bold mb-2">🚀 Comece sua jornada!</h3>
+                            <p class="mb-4">Selecione um módulo no menu lateral para iniciar seus estudos e aprender a amar a Deus com toda a sua mente.</p>
+                            <button onclick="showSection('objetivo')" class="bg-white text-blue-600 px-6 py-2 rounded-lg font-bold hover:bg-gray-100 transition-colors">
+                                Ver o Objetivo Geral
+                            </button>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        const quizQuestions = [
+            { question: "O teólogo X é divorciado, portanto suas visões sobre o casamento cristão não são confiáveis.", fallacy: "Ad Hominem" },
+            { question: "Ou você aceita a interpretação pré-milenista do Apocalipse, ou você não acredita na segunda vinda de Cristo.", fallacy: "Falso Dilema" },
+            { question: "Os defensores da predestinação acreditam que os seres humanos são meros robôs sem vontade própria, o que é claramente antibíblico.", fallacy: "Espantalho" },
+            { question: "Ninguém jamais provou que Adão e Eva não foram personagens históricos, portanto, devemos aceitar que foram.", fallacy: "Apelo à Ignorância" },
+            { question: "Se permitirmos o batismo infantil, logo estaremos batizando bebês incrédulos, e em seguida abandonaremos a necessidade da fé para a salvação, o que levará à apostasia total da igreja.", fallacy: "Derrapagem" },
+            { question: "A sã doutrina é verdadeira porque é o que a Bíblia ensina, e sabemos que a Bíblia é verdadeira porque ela contém a sã doutrina.", fallacy: "Petição de Princípio" },
+            { question: "O famoso cientista Dr. Silva, um especialista em física quântica, afirmou que a teoria da expiação substitutiva penal é incoerente.", fallacy: "Apelo Inadequado à Autoridade" },
+            { question: "A igreja sempre cantou hinos tradicionais com órgão. Portanto, usar guitarras e baterias no louvor é errado.", fallacy: "Apelo à Tradição" },
+            { question: "Esta nova abordagem hermenêutica é a mais recente, portanto, deve ser a mais correta e avançada.", fallacy: "Apelo à Novidade" },
+            { question: "Olhem para esta imagem de uma criança faminta. Como podemos gastar dinheiro construindo igrejas quando existe tanto sofrimento? Doar para a construção é errado.", fallacy: "Apelo à Emoção" },
+            { question: "Participei de duas igrejas reformadas e em ambas as pessoas eram frias e intelectuais. Logo, todas as igrejas reformadas são frias e sem amor.", fallacy: "Generalização Apressada" },
+            { question: "Cada tijolo neste edifício é leve, portanto, o edifício inteiro é leve.", fallacy: "Falácia da Composição" },
+            { question: "A Bíblia usa a palavra 'amor' para descrever o amor de Deus e o amor ao dinheiro. Portanto, o amor é uma coisa contraditória.", fallacy: "Equivocação" },
+            { question: "Você ainda insiste em suas visões teológicas heréticas?", fallacy: "Pergunta Complexa" },
+            { question: "O time de futebol da nossa igreja é o melhor do campeonato. João é membro da nossa igreja, portanto, ele deve ser um ótimo jogador de futebol.", fallacy: "Falácia da Divisão" }
+        ];
+
+        // --- FUNCTIONS ---
+
+        function renderMath() {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function showSection(sectionId) {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = ''; // Clear previous content
+            
+            const section = document.createElement('section');
+            section.id = sectionId;
+            section.className = 'content-section';
+            section.innerHTML = courseData[sectionId].content;
+            mainContent.appendChild(section);
+
+            // Special handling for quiz
+            if (sectionId === 'modulo2') {
+                populateQuiz();
+            }
+
+            // Update active menu item
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                if (item.dataset.section === sectionId) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderMath();
+        }
+
+        function flipCard(card) {
+            card.classList.toggle('flipped');
+        }
+
+        function populateQuiz() {
+            const quizContainer = document.getElementById('quiz-falacias');
+            if (!quizContainer) return;
+
+            quizContainer.innerHTML = ''; // Clear existing questions
+            quizQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question border-t border-red-200 dark:border-red-800 pt-6';
+                
+                const questionText = document.createElement('p');
+                questionText.className = 'font-semibold mb-3';
+                questionText.textContent = `${index + 1}. "${q.question}"`;
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'grid grid-cols-1 md:grid-cols-2 gap-2';
+
+                // Create a shuffled list of options for each question
+                const allFallacies = [...new Set(quizQuestions.map(item => item.fallacy))];
+                let options = [q.fallacy];
+                while (options.length < 4) {
+                    let randomFallacy = allFallacies[Math.floor(Math.random() * allFallacies.length)];
+                    if (!options.includes(randomFallacy)) {
+                        options.push(randomFallacy);
+                    }
+                }
+                
+                const finalOptions = shuffleArray(options);
+
+                finalOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.className = 'quiz-option p-3 bg-gray-100 dark:bg-slate-600 rounded-lg text-left';
+                    button.textContent = option;
+                    button.onclick = () => checkAnswer(button, option === q.fallacy, q.fallacy);
+                    optionsDiv.appendChild(button);
+                });
+
+                const explanationDiv = document.createElement('div');
+                explanationDiv.className = 'answer-explanation hidden mt-3 p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-sm';
+                explanationDiv.innerHTML = `<strong>Resposta Correta: ${q.fallacy}.</strong>`;
+
+                questionDiv.appendChild(questionText);
+                questionDiv.appendChild(optionsDiv);
+                questionDiv.appendChild(explanationDiv);
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function checkAnswer(button, isCorrect, correctFallacy) {
+            const questionContainer = button.closest('.quiz-question');
+            const allOptions = questionContainer.querySelectorAll('.quiz-option');
+            const explanation = questionContainer.querySelector('.answer-explanation');
+            
+            allOptions.forEach(option => {
+                option.disabled = true;
+                if (option.textContent === correctFallacy) {
+                    option.classList.add('correct');
+                }
+            });
+
+            if (!isCorrect) {
+                button.classList.add('incorrect');
+            }
+            
+            if (explanation) {
+                explanation.classList.remove('hidden');
+                explanation.innerHTML = `<strong>Resposta Correta: ${correctFallacy}.</strong>`;
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initializeCourse() {
+            const menuNav = document.getElementById('menu-nav');
+            const mainContent = document.getElementById('main-content');
+            
+            const menuOrder = ['welcome', 'objetivo', 'modulo1', 'modulo2', 'modulo3', 'modulo4', 'modulo5', 'modulo6', 'recursos', 'avaliacao'];
+
+            menuOrder.forEach(key => {
+                const data = courseData[key];
+                const button = document.createElement('button');
+                button.className = 'menu-item w-full text-left p-3 rounded-lg bg-gray-100 dark:bg-slate-700 transition-all';
+                button.textContent = data.title;
+                button.dataset.section = key;
+                button.onclick = () => showSection(key);
+                menuNav.appendChild(button);
+            });
+
+            // Load welcome section by default
+            showSection('welcome');
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', initializeCourse);
+
+    </script>
+</body>
+</html>
